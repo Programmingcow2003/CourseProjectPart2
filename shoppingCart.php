@@ -75,10 +75,14 @@ if(isset($_POST['checkout'])){
 
     $missing_item = $missing_item_array['missing_item'];
     $order_id = $order_id_array['order_id'];
-    
 
+if($missing_item !== null){
+    $how_low_array = $pdo->query("Select stock_quantity from Product where product_id = $missing_item;")->fetch(PDO::FETCH_ASSOC);
+    $how_low = $how_low_array['stock_quantity'];
+    
+}
     if($missing_item !== null){
-        echo "<p> Product ID $missing_item is out of stock. </p>";
+        echo "<p> Product ID $missing_item does not have enough in stock (Stock amount $how_low) </p>";
     }
 
     if($order_id !== null){

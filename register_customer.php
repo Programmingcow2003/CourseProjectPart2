@@ -43,6 +43,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])){
     </label><br>
 
     <input type = "submit" name="register" value="Register">
-    <input type = "reset" value ="Cancel">
+
+
 </form>
+
+<form method="post" action="shopMain.php">
+    <input type="submit" value = "Cancel">
+    </form> 
 </html>

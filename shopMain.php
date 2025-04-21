@@ -22,7 +22,11 @@ if (isset($_POST["logout"])) {
     }
 ?>    
 
-
+<form method = "post" action = "changepassword.php">
+<p align="right">
+<input type="submit" value="change password">
+</p>
+</form>
 
 
 <!DOCTYPE html>
