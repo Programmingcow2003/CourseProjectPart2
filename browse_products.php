@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <form method="post" action="shopMain.php">
     <p align="right">
@@ -27,8 +26,6 @@ if (isset($_POST['add_to_cart']) && isset($_POST['quantity'])) {
     foreach ($_POST['quantity'] as $productName => $quantity) {
         $quantity = intval($quantity);
         if ($quantity > 0) {
-            
-
             if (isset($_SESSION['cart'][$productName])) {
                 $_SESSION['cart'][$productName] += $quantity;
             } else {
@@ -105,7 +102,6 @@ if (isset($_POST['selected_category'])) {
 
 <?php
 
-
 if(!isset($_SESSION["username"])){
 
 ?>
@@ -113,19 +109,17 @@ if(!isset($_SESSION["username"])){
     <br><br>
     <?php if (isset($_SESSION['last_selected_category'])): ?>
         <h2> The current category is <?= htmlspecialchars($_SESSION['last_selected_category']) ?></h2>
-    <?php else: ?>
-        <h2> Please select a category </h2>
-    <?php endif; ?>
-
-    <h3> Products in this category </h3>
-    <ul>
-        <?php
-        if (isset($_SESSION['last_selected_category'])) {
+        <h3> Products in this category </h3>
+        <ul>
+            <?php
             $items = getAllItems($_SESSION['last_selected_category']);
             foreach ($items as $item) { ?>
                 <li><?= htmlspecialchars($item['name']) ?> - <?= htmlspecialchars($item['price']) ?></li>
             <?php } ?>
-        <?php } ?>
+        </ul>
+    <?php else: ?>
+        <h2> Please select a category </h2>
+    <?php endif; ?>
 
 <?php
 } else {
@@ -142,32 +136,27 @@ if (isset($_POST["logout"])) {
     }
 ?>   
 
-    <h2> The current category is <?= htmlspecialchars($_SESSION['last_selected_category']) ?></h2>
-    <h3> Products in this category </h3>
+    <?php if (isset($_SESSION['last_selected_category'])): ?>
+        <h2> The current category is <?= htmlspecialchars($_SESSION['last_selected_category']) ?></h2>
+        <h3> Products in this category </h3>
 
-    
-
-
-
-    <form method ="post">
-        <ul>
-            <?php
-            $items = getAllItems($_SESSION['last_selected_category']);
-            foreach ($items as $item) {
-                $productName = htmlspecialchars($item['name']);
-                $productPrice = htmlspecialchars($item['price']);
+        <form method ="post">
+            <ul>
+                <?php
+                $items = getAllItems($_SESSION['last_selected_category']);
+                foreach ($items as $item) {
+                    $productName = htmlspecialchars($item['name']);
+                    $productPrice = htmlspecialchars($item['price']);
+                    ?>
+                    <li><?php echo $productName ?> - <?php echo $productPrice ?></li>
+                    <input type="number" name="quantity[<?= $productName ?>]" min ="0">
+                </li>
+                <?php
+                }
                 ?>
-
-                <li><?php echo $productName ?> - <?php echo $productPrice ?></li>
-                <input type="number" name="quantity[<?= $productName ?>]" min ="0">
-            </li>
-            <?php
-            }
-            ?>
             </ul>
             <button type ="submit" name="add_to_cart">Add to cart </button>
         </form>
+    <?php endif; ?>
 <?php }
 ?>
-
-
