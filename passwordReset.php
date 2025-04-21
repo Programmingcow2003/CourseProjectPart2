@@ -8,7 +8,15 @@ if( isset($_POST["change"]) ) {
         if( $_POST["password1"] == $_POST["password2"] ) {
             
             $pdo = connectDB();
-            $stmt = $pdo->prepare("UPDATE password FROM Employee WHERE employee_id = :employee_id");
+            $stmt = $pdo->prepare("UPDATE Employee SET password = :password WHERE employee_id = :employee_id");
+            $stmt->bindParam(':password', $_POST['password1']);
+            $stmt->bindParam(':employee_id', $_POST['employee_id']);
+            $stmt->execute();
+            $employee = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $pdo = connectDB();
+            $stmt = $pdo->prepare("UPDATE Employee SET password_updated = :password_updated  WHERE employee_id = :employee_id");
+            $stmt->bindParam(':password', $_POST['password1']);
             $stmt->bindParam(':employee_id', $_POST['employee_id']);
             $stmt->execute();
             $employee = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -28,7 +36,8 @@ if( isset($_POST["change"]) ) {
         if( $_POST["password1"] == $_POST["password2"] ) {
             
             $pdo = connectDB();
-            $stmt = $pdo->prepare("UPDATE password FROM Customer WHERE customer_id = :customer_id");
+            $stmt = $pdo->prepare("UPDATE Customer SET password = :password WHERE customer_id = :customer_id");
+            $stmt->bindParam(':password', $_POST['password1']);
             $stmt->bindParam(':customer_id', $_POST['customer_id']);
             $stmt->execute();
             $employee = $stmt->fetch(PDO::FETCH_ASSOC);
