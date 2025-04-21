@@ -31,7 +31,7 @@ if( isset($_POST["change"]) ) {
             echo '<p style="color:red;">Your input passwords do not match.</p>';
         }
 
-    } if( isset( $_POST["customer_id"] ) ) {
+    } else if( isset( $_POST["customer_id"] ) ) {
 
         if( $_POST["password1"] == $_POST["password2"] ) {
             
@@ -51,7 +51,7 @@ if( isset($_POST["change"]) ) {
         } else {
             echo '<p style="color:red;">Your input passwords do not match.</p>';
         }
-    }
+    } 
 }
 
 ?>
