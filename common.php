@@ -34,5 +34,38 @@ function authenticate2($user, $password) {
     }
 }
 
+function authenticateEmployee($user, $password) {
+    try { 
+        //getting if the employee username and password are valid
+        $dbh = connectDB();
+        $statement = $dbh->prepare("SELECT count(*) FROM Employee ".
+        "where username = :username and password = sha2(:password,256) ");
+        $statement->bindParam(":username", $user);
+        $statement->bindParam(":password", $password);
+        $result = $statement->execute();
+        $row=$statement->fetch();
+        $dbh=null;
+        
+            return $row[0];
 
+
+    } catch (PDOException $e) {
+        print "Error!" . $e->getMessage() . "<br/>";
+        die();
+    }
+}
+
+function checkPasswordValidity( $user, $password ) {
+    //getting if the employee needs to reset their password as its their first use
+    $dbh = connectDB();
+    $statement = $dbh->prepare("SELECT count(*) FROM Employee ".
+    "where username = :username and password = sha2(:password,256) and password_updated = false");
+    $statement->bindParam(":username", $user);
+    $statement->bindParam(":password", $password);
+    $result = $statement->execute();
+    $reset=$statement->fetch();
+    $dbh=null;
+    
+        return $row[0];
+}
 ?>
