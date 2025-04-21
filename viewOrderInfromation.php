@@ -41,13 +41,34 @@ if (!isset($_SESSION["username"])) {
     echo '<p align="right"> Welcome ' . $_SESSION["username"] . '</p>';
 }
 
+?>
+
+<form method = "post" action = "browse_products.php">
+    <p align="right">
+    <input type="submit" value="logout" name="logout">
+    </p>
+</form>
+    <?php
+if (isset($_POST["logout"])) {
+    header("LOCATION: customer_login.php");
+    session_destroy();
+    }
+
+
+?>
+
+<form method="post" action="shopMain.php">
+    <p align="right">
+    <input type="submit" value = "Return to main">
+    </form> 
+
+
+<?php
+
 getOrderDetails($_SESSION['customer_id']);
 ?>
 
-<form method = "post" action = "viewOrderInfromation.php">
-<p align="right">
-<input type="submit" value="logout" name="logout">
-</p>
+
 
 
 
