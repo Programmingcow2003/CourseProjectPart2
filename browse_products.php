@@ -1,6 +1,17 @@
+
+<!DOCTYPE html>
+<form method="post" action="shopMain.php">
+    <p align="right">
+    <input type="submit" value = "Return to main">
+    </form> 
+</html>
 <?php
 
 session_start();
+if (!isset($_SESSION["cart"])) {
+    $_SESSION["cart"] = [];
+}
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 require 'db.php';
@@ -16,14 +27,14 @@ if (isset($_POST['add_to_cart']) && isset($_POST['quantity'])) {
     foreach ($_POST['quantity'] as $productName => $quantity) {
         $quantity = intval($quantity);
         if ($quantity > 0) {
-            // 1. Store in session cart
+            
+
             if (isset($_SESSION['cart'][$productName])) {
                 $_SESSION['cart'][$productName] += $quantity;
             } else {
                 $_SESSION['cart'][$productName] = $quantity;
             }
 
-            // 2. Get the product ID from the name
             $stmt = $pdo->prepare("SELECT product_id FROM Product WHERE name = :name");
             $stmt->bindParam(':name', $productName);
             $stmt->execute();
@@ -31,10 +42,9 @@ if (isset($_POST['add_to_cart']) && isset($_POST['quantity'])) {
 
             if ($product) {
                 $product_id = $product['product_id'];
-                $customer_id = $_SESSION['customer_id']; // Make sure you have this set when logged in!
+                $customer_id = $_SESSION['customer_id']; 
 
-                // 3. Insert into ItemInCart table
-                $insert = $pdo->prepare("INSERT INTO ItemInCart (customer_id, product_id, quantity) VALUES (:customer_id, :product_id, :quantity)");
+                $insert = $pdo->prepare("INSERT INTO ItemInCart (customer_id, product_id, quantity) VALUES (:customer_id, :product_id, :quantity) on duplicate key update quantity = quantity + VALUES(quantity)");
                 $insert->bindParam(':customer_id', $customer_id);
                 $insert->bindParam(':product_id', $product_id);
                 $insert->bindParam(':quantity', $quantity);
@@ -96,12 +106,17 @@ if (isset($_POST['selected_category'])) {
 <?php
 
 
-if($_SESSION["username"] == null){
+if(!isset($_SESSION["username"])){
 
 ?>
     
     <br><br>
-    <h2> The current category is <?= htmlspecialchars($_SESSION['last_selected_category']) ?></h2>
+    <?php if (isset($_SESSION['last_selected_category'])): ?>
+        <h2> The current category is <?= htmlspecialchars($_SESSION['last_selected_category']) ?></h2>
+    <?php else: ?>
+        <h2> Please select a category </h2>
+    <?php endif; ?>
+
     <h3> Products in this category </h3>
     <ul>
         <?php
@@ -119,14 +134,21 @@ if($_SESSION["username"] == null){
     <p align="right">
     <input type="submit" value="logout" name="logout">
     </p>
+</form>
     <?php
 if (isset($_POST["logout"])) {
-    header("LOCATION: browse_products.php");
+    header("LOCATION: customer_login.php");
     session_destroy();
     }
-?>    
+?>   
+
     <h2> The current category is <?= htmlspecialchars($_SESSION['last_selected_category']) ?></h2>
     <h3> Products in this category </h3>
+
+    
+
+
+
     <form method ="post">
         <ul>
             <?php

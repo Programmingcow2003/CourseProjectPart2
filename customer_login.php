@@ -35,6 +35,10 @@ if (isset($_POST["login"])) {
         <br><input type="submit" name = "login" value="login">
         <input type="submit" name = "new account" value = "new_account">
     </form>
+
+    <form method="post" action="browse_products.php">
+        <input type="submit" value = "Browse products">
+    </form>
 </body>
 </html>
 
