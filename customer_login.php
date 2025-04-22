@@ -39,6 +39,10 @@ if (isset($_POST["login"])) {
     <form method="post" action="browse_products.php">
         <input type="submit" value = "Browse products">
     </form>
+
+    <form method="post" action="employee_login.php">
+        <input type="submit" value = "Employees please login here">
+    </form>
 </body>
 </html>
 

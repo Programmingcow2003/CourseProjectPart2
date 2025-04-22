@@ -1,4 +1,5 @@
 <?php
+require 'common.php';
 session_start();
 if (!isset($_SESSION["username"])) {
     header("LOCATION:employee_login.php");
@@ -15,13 +16,13 @@ if (!isset($_SESSION["username"])) {
     <form method = "post" action = "updatePrice.php">
         Product id:
         <input type="text" name="product_id"></input><br>
-        Change in Stock:
+        New Price:
         <input type="text" name="new_price"></input><br>
         <input type="submit" name="update" value="update"></input><br>
     </form>
     
     <?php 
-        if( isset($_POST["submit"]) ) {
+        if( isset($_POST["update"]) ) {
             if( updatePrice( $_POST["product_id"],$_POST["new_price"], $_SESSION["employee_id"], "employee" ) ) {
                 echo '<p style="color:red;">The input price change is invalid (likely the price is 0 or negative).</p>';
             } else {

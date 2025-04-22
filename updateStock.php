@@ -1,4 +1,5 @@
 <?php
+require 'common.php';
 session_start();
 if (!isset($_SESSION["username"])) {
     header("LOCATION:employee_login.php");
@@ -21,9 +22,9 @@ if (!isset($_SESSION["username"])) {
     </form>
     
     <?php 
-        if( isset($_POST["submit"]) ) {
+        if( isset($_POST["update"]) ) {
             if( updateStock( $_POST["product_id"],$_POST["stock_change"], $_SESSION["employee_id"], "employee" ) ) {
-                echo '<p style="color:red;">The input stock change is invalid (likely more stock was attempted to be removed than existed).</p>';
+                echo '<p style="color:red;">The input stock change is invalid .</p>';
             } else {
                 echo "<p>The stock has been changed.</p>";
             }
@@ -40,4 +41,7 @@ if (!isset($_SESSION["username"])) {
             return;
         }
     ?>
+
+
+
 </html>

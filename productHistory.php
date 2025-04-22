@@ -10,13 +10,27 @@ if (!isset($_SESSION["username"])) {
 
 ?>
 
+
+<form method="post" action="productHistory.php">
+        <input type="submit" name="Back" value="Back">Go Back</input><br>
+    </form>
+
+    <?php
+        if( isset($_POST["Back"]) ) {
+            header("LOCATION:employeeMain.php");
+            return;
+        }
+    ?>
+</html>
+
+
 <!DOCTYPE html>
 <html>
 
-    Enter a product id to see it's stock history: 
+    Enter a product id to see it's price history: 
     <form method="post" action="productHistory.php">
         <input type="text" name="stock_id"></input><br>
-        <input type="submit" value="getStock" name="stockHistory"></input><br>
+        <input type="submit" value="getPrice" name="stockHistory"></input><br>
     </form>
 
     <style>
@@ -27,14 +41,14 @@ if (!isset($_SESSION["username"])) {
 </style>
     <?php 
     if( isset($_POST["stock_id"]) ) {
-        $stockHistory = get_stock_history( $_POST["stock_id"] );
+        $stockHistory = get_price_history( $_POST["stock_id"] );
         ?>
         <table>
         <tr>
         <th>Timestamp</th>
         <th>Old Price</th>
         <th>New Price</th>
-        <th>Percentage change</th>
+        <th>Total change</th>
         </tr>
 
         <?php
@@ -43,7 +57,9 @@ if (!isset($_SESSION["username"])) {
         echo "<td>" . $row[0] . "</td>";
         echo "<td>" . $row[1] . "</td>";
         echo "<td>" . $row[2] . "</td>";
-        echo "<td>" . $row[2] - $row[1] . "</td>";
+        if($row[1] !==0 &&  is_numeric($row[1])){
+            echo "<td>" . (($row[2] - $row[1]) / $row[1]) * 100 . "%</td>";
+        }
         echo "</tr>";
         }
         echo "<table>";
@@ -51,10 +67,10 @@ if (!isset($_SESSION["username"])) {
     ?>
 
 
-    Enter a product id to see it's price history: 
+    Enter a product id to see it's stock history: 
     <form method="post" action="productHistory.php">
         <input type="text" name="price_id"></input><br>
-        <input type="submit" value="getPrice" name="priceHistory"></input><br>
+        <input type="submit" value="getStock" name="priceHistory"></input><br>
     </form>
 
     <style>
@@ -81,10 +97,11 @@ if (!isset($_SESSION["username"])) {
         echo "<td>" . $row[0] . "</td>";
         echo "<td>" . $row[1] . "</td>";
         echo "<td>" . $row[2] . "</td>";
-        echo "<td>" . $row[2] - $row[1] / $row[1] . "</td>";
+        if($row[1] !==0 &&  is_numeric($row[1]))
+            echo "<td>" . ($row[2] / $row[1]) * 100 . "%</td>";
         echo "</tr>";
         }
         echo "<table>";
     }
     ?>
-</html>
+

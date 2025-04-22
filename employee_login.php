@@ -49,5 +49,9 @@ if( isset($_POST["login"]) ) {
         </label>
         <br><input type="submit" name = "login" value="login">
     </form>
+
+    <form method="post" action="customer_login.php">
+        <input type="submit" value = "Customers please login here">
+    </form>
 </body>
 </html>
